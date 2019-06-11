@@ -1,10 +1,12 @@
-sfunc1(){
-    if[ $1 = "a" ]
-        then ls -l -a
-    else if [$1 = "r" ]
-        then ls -l -r
-    else if [ $1 = "ar" -o $1 = "ra" ]
-        then ls -l -a -r
-    else ls -l
-    fi
-}
+echo "作成中です"
+# sfunc1(){
+#     tmp="$1"
+#     if[ "$tmp" = "a" ];  then 
+#         ls -la
+#     else if [ $tmp = "r" ]; then 
+#         ls -lr
+#     else if [ $tmp = "ar" -o $tmp = "ra" ]; then 
+#         ls -lar
+#     else ls -l
+#     fi
+# }
