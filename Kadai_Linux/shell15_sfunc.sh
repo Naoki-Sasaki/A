@@ -4,7 +4,7 @@ sfunc1(){
     else if [$1 = "r" ]
         then ls -l -r
     else if [ $1 = "ar" -o $1 = "ra" ]
-        then ls -l -a -ra
+        then ls -l -a -r
     else ls -l
     fi
 }
