@@ -3,7 +3,7 @@ sfunc1(){
         then ls -l -a
     else if [$1 = "r" ]
         then ls -l -r
-    else if [ $1 = "lar" -o $1 = "ral" ]
+    else if [ $1 = "lr" -o $1 = "rl" ]
         then ls -l -a -ra
     else ls -l
     fi
