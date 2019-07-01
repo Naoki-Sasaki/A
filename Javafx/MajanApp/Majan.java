@@ -11,15 +11,17 @@ public class Majan extends Application{
     private Button[][] bt = new Button[4][9];
     private Button[] bt2 = new Button[4];
     private Button[] bt3 = new Button[2];
+    private Label[][] mentlabel = new Label[5][3];
 
     public static void main(String... args){
         launch(args);
     }
 
     public void start(Stage stage) throws Exception{
-
-        stage.setWidth(700);
-        stage.setHeight(300);
+        
+    //初期画面の作成    
+        stage.setWidth(800);
+        stage.setHeight(400);
 
         String[][] syurui ={
             {"m1","m2","m3","m4","m5","m6","m7","m8","m9"},
@@ -30,7 +32,7 @@ public class Majan extends Application{
         String[] Op = {"ポン","チー","ロン","ツモ"};
         String[] Ent = {"戻る","決定"};
 
-        //ボタンの作成・テキストをセット
+        //ハイのボタンの作成・テキストをセット(中央)
         for(int i = 0; i < bt.length; i++){
             if(i == 3){
                 for(int j = 0; j < 7; j++){
@@ -45,7 +47,6 @@ public class Majan extends Application{
             } 
         }
 
-        //GPを作成し、btをセットする
         GridPane gp = new GridPane();
         gp.setAlignment(Pos.CENTER);
         gp.setHgap(10);
@@ -63,20 +64,22 @@ public class Majan extends Application{
             }
         }
         
-        //オプションボタンを作成・テキストをセット
+        //オプションボタンを作成・テキストをセット(右側)
         for(int i = 0; i < bt2.length; i++){
             bt2[i] = new Button(Op[i]);
         }
+
         VBox vb = new VBox(10d);
         vb.setPadding(new Insets(20, 20, 20, 20));
         for (int i = 0; i<bt2.length; i++) {
             vb.getChildren().addAll(bt2[i]);
         }
 
-        //決定・戻るボタンの作成
+        //決定・戻るボタンの作成(下側)
         for(int i = 0; i < bt3.length; i++){
             bt3[i] = new Button(Ent[i]);
         }
+        
         HBox hb = new HBox(30d);
         hb.setPadding(new Insets(20, 20, 20, 20));
 
@@ -84,19 +87,56 @@ public class Majan extends Application{
             hb.getChildren().addAll(bt3[i]);
         }
 
+        //メンツの表示(左)
+        for(int i = 0; i < 5; i++){
+            if(i == 4){
+                for(int j = 0; j < 2; j++){
+                    mentlabel[i][j] = new Label("?");
+                    mentlabel[i][j].setPrefWidth(20);
+               }
+            } else{
+                for(int j = 0; j < 3; j++){
+                    mentlabel[i][j] = new Label("?");
+                    mentlabel[i][j].setPrefWidth(20);
+               }
+            } 
+        }
+
+        GridPane mentGp = new GridPane();
+        mentGp.setAlignment(Pos.CENTER);
+        mentGp.setHgap(10);
+        mentGp.setVgap(10);
+        mentGp.setPadding(new Insets(20, 20, 20, 20));
+        for(int i = 0; i < 5; i++){
+            if(i == 4){
+                for(int j = 0; j < 2; j++){
+                    mentGp.add(mentlabel[i][j],j,i);
+                }
+            } else{
+                for(int j = 0; j < 3; j++){
+                    mentGp.add(mentlabel[i][j],j,i);
+                }
+            }
+        }
+
+        //rootPaneの作成
         BorderPane root = new BorderPane();
         root.setCenter(gp);
         root.setRight(vb);
         root.setBottom(hb);
+        root.setLeft(mentGp);;
         gp.setAlignment(Pos.CENTER);
         vb.setAlignment(Pos.CENTER_RIGHT);
         hb.setAlignment(Pos.BOTTOM_CENTER);
+        mentGp.setAlignment(Pos.CENTER_LEFT);
 
-        //上部にgetHandを描写する
         //決定が押された後に頭・役牌・待ちの選択
+
+        //ここまで初期画面
 
         stage.setScene(new Scene(root));
         stage.setTitle("符計算");
         stage.show();
+
     }
 }
