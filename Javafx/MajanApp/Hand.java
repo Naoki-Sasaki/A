@@ -6,7 +6,7 @@ interface InterHand{
     public void setMinkan(String s,int i);
     public void setAtama(String s);
     public void setAgari(boolean b);
-
+    public void setMati(String s);
     public String getMen(int i);
     public String getPon(int i);
     public String getTii(int i);
@@ -14,7 +14,6 @@ interface InterHand{
     public String getMinkan(int i);
     public String getAtama();
     public boolean getAgari();
-
 }
 
 class Hand implements InterHand{
@@ -25,6 +24,8 @@ class Hand implements InterHand{
     private String[] Minkan = new String[4];
     private String Atama;
     private boolean Agari = false;              //tumo -> ture、ron -> false
+    private String Mati;
+    private String Yakuhai;
 
     public void setMen(String s,int i){
         Men[i] = s;
@@ -47,7 +48,12 @@ class Hand implements InterHand{
     public void setAgari(boolean b){
         Agari = b;
     }
-
+    public void setMati(String s){
+        Mati = s;
+    }
+    public void setYakuhai(String s){
+        Yakuhai = s;
+    }
 
     public String getMen(int i){
         return Men[i];
@@ -67,11 +73,13 @@ class Hand implements InterHand{
     public String getAtama(){
         return Atama;
     }
-    public boolean getAgari(int i){
+    public boolean getAgari(){
         return Agari;
     }
-
-
-
-
+    public String getMati(){
+        return Mati;
+    }
+    public String getYakuhai(){
+        return Yakuhai;
+    }
 }

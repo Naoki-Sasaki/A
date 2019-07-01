@@ -8,7 +8,7 @@ interface InterCalc{
     public void setMinkanList(String s,int i);
     public void setAtamaL(String s);
     public void setAgariL(boolean b);
-
+    public void setMatiL(String s);
     public int calcAll();
     public int calcMen();
     public int calcPon();
@@ -17,6 +17,7 @@ interface InterCalc{
     public int calcMinkan();
     public int calcAtama();
     public int calcAgari();
+    public int calcMati();
 }
 
 class Calc implements InterCalc{
@@ -24,13 +25,11 @@ class Calc implements InterCalc{
         {"m1","m2","m3","m4","m5","m6","m7","m8","m9"},
         {"s1","s2","s3","s4","s5","s6","s7","s8","s9"},
         {"p1","p2","p3","p4","p5","p6","p7","p8","p9"},
-        {"東","南","西","北","白","發","中"}
-        };
+        {"東","南","西","北","白","發","中"}};
 
     String[] tyutyan = {"m2","m3","m4","m5","m6","m7","m8",
                         "s2","s3","s4","s5","s6","s7","s8",
-                        "p2","p3","p4","p5","p6","p7","p8"
-                        };
+                        "p2","p3","p4","p5","p6","p7","p8"};
 
     String[] yaotyu = {"m1","m9","s1","s9","p1","p9",
                        "東","南","西","北","白","發","中"};
@@ -41,8 +40,9 @@ class Calc implements InterCalc{
     ArrayList<String> AnkanList = new ArrayList<String>();
     ArrayList<String> MinkanList = new ArrayList<String>();
     String AtamaL;
-    boolean Agari;
-
+    String MatiL;
+    boolean AgariL;
+    String Yakuhai;
 
     public void setMenList(String s){
         for(int i = 0; i < 12; i++){
@@ -85,17 +85,12 @@ class Calc implements InterCalc{
     public void setAgariL(boolean b){
         AgariL = b;
     }
-
-
-
-
-
-
-
-
+    public void setMatiL(String s){
+        MatiL = s;
+    }
 
     //ここから符の計算
-    
+    // public int calcMen();
     public int calcPon(){
         int tmp = 0;
         for(int i = 0; i < PonList.size(); i++){
@@ -107,22 +102,22 @@ class Calc implements InterCalc{
                 }
             }
         }
-
         return tmp;
     }
+
+    //public int calcTii();
 
     public int calcAnkan(){
         int tmp = 0;
         for(int i = 0; i < AnkanList.size(); i++){
             for(int j = 0; j < tyutyan.length; j++){
-                if(tyutyan[j].equals(AnkanList(i))){
+                if(tyutyan[j].equals(AnkanList.get(i))){
                     tmp = tmp + 16;
                 } else {
                     tmp = tmp + 32;
                 }
             }
         }
-
         return tmp;
     }
 
@@ -137,29 +132,30 @@ class Calc implements InterCalc{
                 }
             }
         }
-
         return tmp;
     }
 
     public int calcAtama(){
+        int tmp = 0;
         for(int i = 0; i < 7; i++){
-            if(AtamaL.equals(syuhai[4][i])){
-                return 2;
+            if(AtamaL.equals(Yakuhai)){
+                tmp = tmp + 2;
                 break;
             }
         }
+        return tmp;
     }
 
     public int calcAgari(){
-        if((PonLint.size() == 0) && (TiiList.size() == 0) && (MinkanList.size() == 0)){
-            if(Agari == true){
+        if((PonList.size() == 0) && (TiiList.size() == 0) && (MinkanList.size() == 0)){
+            if(AgariL == true){
                 return 2;
             } else {
                 return 10;
             }
+        } else{
+            return 0;
         }
     }
-    
-
-
+    //public int calcMati();
 }
