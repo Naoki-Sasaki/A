@@ -92,7 +92,7 @@ public class MajanMini extends Application{
         //メンツの表示(左) <- Handからのゲッターで行う
         for(int i = 0; i < 5; i++){
             
-            for(int j = 0; j < 3; j++){
+            for(int j = 0; j < 3; j++){     //getterで取得するようにする
                 String a = hand.getMen(i,j);
                 mentlabel[i][j] = new Label(a);
                 mentlabel[i][j].setPrefWidth(20);
@@ -126,26 +126,39 @@ public class MajanMini extends Application{
 
         //ここまで初期画面
 
-        bt[0][0].setOnAction((ActionEvent e) -> {  //？のところを見つけて入れる
+        /*
+        bt[0][0].setOnAction((ActionEvent e) -> {
             hand.setMen(syurui[0][0],0,0);
             mentlabel[0][0].setText(hand.getMen(0,0));
         });
+        */
 
-        /*
-        bt[0][0].setOnAction((ActionEvent e) -> {  //？のところを見つけて入れる
+        
+        bt[0][1].setOnAction((ActionEvent e) -> {  //？のところを見つけて入れる
             for(int i = 0; i < 5; i++){
                 for(int j = 0; j < 3; j++){
                     if(hand.getMen(i,j).equals("?")){
-                        hand.setMen(syurui[0][0],0,0);
+                        hand.setMen(syurui[0][1],i,j);
                         mentlabel[i][j].setText(hand.getMen(i,j));
-                        break;
                     }
                     break;
                 }
                 break;
             }
         });
-        */
+
+        bt[0][2].setOnAction((ActionEvent e) -> {  //？のところを見つけて入れる
+            for(int i = 0; i < 5; i++){
+                for(int j = 0; j < 3; j++){
+                    if(hand.getMen(i,j).equals("?")){
+                        hand.setMen(syurui[0][2],i,j);
+                        mentlabel[i][j].setText(syurui[i][j]);
+                    }
+                    break;
+                }
+                break;
+            }
+        });
 
         
 
