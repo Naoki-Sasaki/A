@@ -8,7 +8,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.*;
 
-public class Majan extends Application{
+public class MajanMini extends Application{
     private Button[][] bt = new Button[4][9];
     private Button[] bt2 = new Button[4];
     private Button[] bt3 = new Button[2];
@@ -19,7 +19,7 @@ public class Majan extends Application{
     }
 
     public void start(Stage stage) throws Exception{
-        Hand hand = new Hand();
+        HandMini hand = new HandMini();
         
     //初期画面の作成    
         stage.setWidth(800);
@@ -89,19 +89,14 @@ public class Majan extends Application{
             hb.getChildren().addAll(bt3[i]);
         }
 
-        //メンツの表示(左)
+        //メンツの表示(左) <- Handからのゲッターで行う
         for(int i = 0; i < 5; i++){
-            if(i == 4){
-                for(int j = 0; j < 2; j++){
-                    mentlabel[i][j] = new Label("?");
-                    mentlabel[i][j].setPrefWidth(20);
-               }
-            } else{
-                for(int j = 0; j < 3; j++){
-                    mentlabel[i][j] = new Label("?");
-                    mentlabel[i][j].setPrefWidth(20);
-               }
-            } 
+            
+            for(int j = 0; j < 3; j++){
+                String a = hand.getMen(i,j);
+                mentlabel[i][j] = new Label(a);
+                mentlabel[i][j].setPrefWidth(20);
+            }
         }
 
         GridPane mentGp = new GridPane();
@@ -109,15 +104,10 @@ public class Majan extends Application{
         mentGp.setHgap(10);
         mentGp.setVgap(10);
         mentGp.setPadding(new Insets(20, 20, 20, 20));
+
         for(int i = 0; i < 5; i++){
-            if(i == 4){
-                for(int j = 0; j < 2; j++){
-                    mentGp.add(mentlabel[i][j],j,i);
-                }
-            } else{
-                for(int j = 0; j < 3; j++){
-                    mentGp.add(mentlabel[i][j],j,i);
-                }
+            for(int j = 0; j < 3; j++){
+                mentGp.add(mentlabel[i][j],j,i);
             }
         }
 
@@ -136,10 +126,28 @@ public class Majan extends Application{
 
         //ここまで初期画面
 
-        bt[0][0].setOnAction((ActionEvent e) -> {
+        bt[0][0].setOnAction((ActionEvent e) -> {  //？のところを見つけて入れる
             hand.setMen(syurui[0][0],0,0);
-            mentlabel[0][0].setText("a");
+            mentlabel[0][0].setText(hand.getMen(0,0));
         });
+
+        /*
+        bt[0][0].setOnAction((ActionEvent e) -> {  //？のところを見つけて入れる
+            for(int i = 0; i < 5; i++){
+                for(int j = 0; j < 3; j++){
+                    if(hand.getMen(i,j).equals("?")){
+                        hand.setMen(syurui[0][0],0,0);
+                        mentlabel[i][j].setText(hand.getMen(i,j));
+                        break;
+                    }
+                    break;
+                }
+                break;
+            }
+        });
+        */
+
+        
 
 
         stage.setScene(new Scene(root));
