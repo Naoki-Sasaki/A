@@ -5,11 +5,22 @@ interface InterHandMini{
     public void setMati(String s);
     public void setYakuhai(String s);
 
+    public String getSyurui(int i, int j);
+    public String getOp(int i);
+    public String getEnt(int i);
+
     public String getMen(int i,int j);
     public String getAtama();
     public boolean getAgari();
     public boolean getMati();
     public String getYakuhai();
+
+    public void remMen(int i,int j);
+    public void remAtama();
+    public void remAgari();
+    public void remMati();
+    public void remYakuhai();
+
 }
 
 class HandMini implements InterHandMini{
@@ -52,6 +63,8 @@ class HandMini implements InterHandMini{
         Yakuhai = s;
     }
 
+
+
     public String getSyurui(int i, int j){
         return syurui[i][j];
     }
@@ -78,5 +91,23 @@ class HandMini implements InterHandMini{
     }
     public String getYakuhai(){
         return Yakuhai;
+    }
+
+
+
+    public void remMen(int i,int j){
+            Men[i][j] = "?";
+    }
+    public void remAtama(){
+
+    }
+    public void remAgari(){
+
+    }
+    public void remMati(){
+
+    }
+    public void remYakuhai(){
+
     }
 }

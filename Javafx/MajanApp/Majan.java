@@ -71,7 +71,7 @@ public class Majan extends Application{
             bt2[i] = new Button(Op[i]);
         }
 
-        VBox vb = new VBox(10d);
+        optionox option = new VBox(10d);
         vb.setPadding(new Insets(20, 20, 20, 20));
         for (int i = 0; i<bt2.length; i++) {
             vb.getChildren().addAll(bt2[i]);
