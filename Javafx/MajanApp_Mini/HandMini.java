@@ -36,7 +36,7 @@ class HandMini implements InterHandMini{
                               {"?","?","?"},
                               {"?","?","?"},
                               {"?","?","?"},
-                              {"?","?"," "}};
+                              {"?","?",null}};
     private String Atama;
     private boolean Agari = false;              //tumo -> ture、ron -> false
     private boolean Mati;                        //ryanmen,syabo:false   pentyan,kantyan,tanki,nobetan:ture
@@ -93,10 +93,40 @@ class HandMini implements InterHandMini{
         return Yakuhai;
     }
 
+    public String serch(){
+        if(Men[0][0].equals("?")){
+            return "NO";
 
+        } else if(Men[1][0].equals("?") && !(Men[0][2].equals("?"))){
+            return "0,2";
+
+        } else if(Men[2][0].equals("?") && !(Men[1][2].equals("?"))){
+            return "1,2";
+
+        } else if(Men[3][0].equals("?") && !(Men[2][2].equals("?"))){
+            return "2,2";
+
+        } else if(Men[4][0].equals("?") && !(Men[3][2].equals("?"))){
+            return "3,2";
+
+        }else{
+            for(int i = 0; i < 5; i++){
+                for(int j = 0; j < 3; j++){
+                    
+                    if(i == 4 && j == 2){
+                        return "4,1";
+
+                    } else if (Men[i][j].equals("?")){
+                        return Integer.toString(i) + "," + Integer.toString(j-1);
+                    }
+                }
+            }
+        }
+        return "NO";
+    }
 
     public void remMen(int i,int j){
-            Men[i][j] = "?";
+        Men[i][j] = "?";
     }
     public void remAtama(){
 

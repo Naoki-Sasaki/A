@@ -47,7 +47,6 @@ public class MajanMini extends Application{
         }
 
         GridPane hai = new GridPane();
-        hai.setAlignment(Pos.CENTER);
         hai.setHgap(10);
         hai.setVgap(10);
         hai.setPadding(new Insets(20, 20, 20, 20));
@@ -78,7 +77,7 @@ public class MajanMini extends Application{
         for(int i = 0; i < bt3.length; i++){
             bt3[i] = new Button(hand.getEnt(i));
         }
-        //bt3[0].setOnAction(new push_return());
+        bt3[0].setOnAction(new push_return());
         
         HBox enter_retrun = new HBox(30d);
         enter_retrun.setPadding(new Insets(20, 20, 20, 20));
@@ -98,7 +97,6 @@ public class MajanMini extends Application{
         }
 
         GridPane mentGp = new GridPane();
-        mentGp.setAlignment(Pos.CENTER);
         mentGp.setHgap(10);
         mentGp.setVgap(10);
         mentGp.setPadding(new Insets(20, 20, 20, 20));
@@ -144,7 +142,6 @@ public class MajanMini extends Application{
             String[] Stid = Id.split(",", 0);
             int x = Integer.parseInt(Stid[0]);
             int y = Integer.parseInt(Stid[1]);
-            //lb.setText(((Button)e.getSource()).getId());
 
             boolean flag = false;
             for(int i = 0; i < 5; i++){
@@ -155,18 +152,13 @@ public class MajanMini extends Application{
                     if(flag == true){
                         break;
                     }
-                    if(hand.getMen(i,j).equals("?")){
+
+                    if(hand.getMen(i,j) == null){
+                        flag = true;
+                        break;
+                    } else if(hand.getMen(i,j).equals("?")){
                         hand.setMen(hand.getSyurui(x,y),i,j);
                         mentlabel[i][j].setText(hand.getMen(i,j));
-                        
-                        /*　printテスト
-                        for(int q = 0; q < 5;q++){
-                            for(int r = 0; r < 3; r++){
-                                System.out.println(hand.getMen(q, r));
-                            }
-                        }
-                        */
-
 
                         flag = true;
                     }
@@ -175,42 +167,21 @@ public class MajanMini extends Application{
         }
     }
 
-
-    /* mentlabelでエラー出る(´･ω･`)
     class push_return implements EventHandler<ActionEvent>{
         public void handle(ActionEvent e){
-            boolean flag = false;
 
-            for(int i = 0; i < 5; i++){
-                if(flag == true){
-                    break;
-                }
-
-                for(int j = 0; j < 3; j++){
-                    if(flag == true){
-                        break;
-                    } 
-                    if(i == 4 && j == 2){
-                        flag = true;
-                        break;
-                    }
-
-                    if(hand.getMen(0,0).equals("?")){
-                        flag = true;
-                        break;
-                    }
-
-                    if(!(hand.getMen(i,j).equals("?"))){
-                        hand.remMen(i,j);
-                        //uplabel.setText("削除しました");
-                        mentlabel[i][j].setText("?");
-
-                    }
-                }
+            if(hand.serch().equals("NO")){
+                //uplabel.setText("選択されていません");
+            } else {
+                String[] tmp = hand.serch().split(",", 0);
+                int x = Integer.parseInt(tmp[0]);
+                int y = Integer.parseInt(tmp[1]);
+                hand.remMen(x,y);
+                mentlabel[x][y].setText(hand.getMen(x,y));
             }
+
         }
     }
-    */
     
 }
 
