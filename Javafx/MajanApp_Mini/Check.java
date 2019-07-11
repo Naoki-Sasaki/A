@@ -4,3 +4,9 @@ interface InterCheck{
     public boolean checkNone();
     public boolean enough();
 }
+
+class Check{
+    public boolean checkFour(){
+        
+    }
+}
