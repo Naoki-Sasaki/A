@@ -213,6 +213,8 @@ public class MajanMini extends Application{
             } else {
                 uplabel.setText("詳細な情報を入力してください");
 
+                
+
                 selectAgari.getItems().addAll("ロン","ツモ");
                 selectAgari.setPrefWidth(160);
                 selectAgari.setOnAction(new SampleEventHandler1());

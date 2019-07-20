@@ -1,15 +1,3 @@
-/*
-作成途中の機能
-4つ以上の牌を選択できない
-手牌が満たされていないと決定できない
-
-決定ボタン後
-待ち、上がり、役牌の選択
-一つも選択されていない場合進めない
-
-符の計算
-計算結果を表示
-*/
 import javafx.application.*;
 import javafx.stage.*;
 import javafx.scene.*;
@@ -19,138 +7,147 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.*;
+import javafx.beans.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ReMajanMini extends Application{
-    private Button[][] bt = new Button[4][9];
-    private Button[] bt2 = new Button[4];
-    private Button[] bt3 = new Button[2];
-    private Label[][] mentlabel = new Label[5][3];
-    private Label uplabel = new Label();
-    BorderPane root = new BorderPane();
+    ReHandMini hand = new ReHandMini();
+    ReCheckMini check = new ReCheckMini();
+    Button[][] btnHai = new Button[4][9];
+    Button[] btnReturnEnter = new Button[2];
+    Button[] btnPonTii = new Button[2];
+    Label[][] lblMents = new Label[5][3];
+    Label lblInstructionToUser = new Label();
+    BorderPane paneRoot = new BorderPane();
+    GridPane paneDispHai = new GridPane();
+    GridPane paneDispMents = new GridPane();
+    VBox paneDistPonTii = new VBox(10d);
+    HBox paneDispReturnEnter = new HBox(10d);
+    FlowPane paneInstructionToUser = new FlowPane();
+  
+    Label lblAgari = new Label();
+    Label lblMati = new Label();
+    Label lblYakuhai = new Label();
+    Button btnAfterEnter = new Button();
+    GridPane paneAfterGrid = new GridPane();
+    HBox paneYakuhaiBox = new HBox(30d);
+    HBox paneMatiBox = new HBox(30d);
+    HBox paneAgariBox = new HBox(30d);
+    VBox paneAfterRightVbox = new VBox();
+    HBox paneAfterEnter = new HBox(30d);
+    ComboBox<String> paneSelectAgari = new ComboBox<String>();
+    ComboBox<String> paneSelectMati = new ComboBox<String>();
+    ComboBox<String> paneSelectYakuhai = new ComboBox<String>();
+    String agariStr;
+    String matiStr;
+    String yakuhaiStr;
 
 
-    //public static Scene scene2 = null;
 
 
     public static void main(String... args){
         launch(args);
     }
-
+    
     @Override
     public void start(Stage stage) throws Exception{
-        ReHandMini hand = new ReHandMini();
-        
-        stage.setWidth(800);
-        stage.setHeight(400);
-
-        //牌のボタンの作成・テキストをセット(中央)
-        for(int i = 0; i < bt.length; i++){
+        //haiに配置(中央)
+        for(int i = 0; i < btnHai.length; i++){
             if(i == 3){
                 for(int j = 0; j < 7; j++){
-                    bt[i][j] = new Button(hand.getSyurui(i,j));
-                    bt[i][j].setPrefWidth(50);
-                    bt[i][j].setId(String.valueOf(i) + "," + String.valueOf(j));  //押された牌を検索するID
-                    bt[i][j].setOnAction(new push_hai());
+                    btnHai[i][j] = new Button(hand.HAI[i][j]);
+                    btnHai[i][j].setPrefWidth(50);
+                    btnHai[i][j].setId(String.valueOf(i) + "," + String.valueOf(j));  //押された牌を検索するID
+                    btnHai[i][j].setOnAction(new PushBtnHai());
                }
             } else{
                 for(int j = 0; j < 9; j++){
-                    bt[i][j] = new Button(hand.getSyurui(i,j));
-                    bt[i][j].setPrefWidth(50);
-                    bt[i][j].setId(String.valueOf(i) + "," + String.valueOf(j));
-                    bt[i][j].setOnAction(new push_hai());
+                    btnHai[i][j] = new Button(hand.HAI[i][j]);
+                    btnHai[i][j].setPrefWidth(50);
+                    btnHai[i][j].setId(String.valueOf(i) + "," + String.valueOf(j));
+                    btnHai[i][j].setOnAction(new PushBtnHai());
                }
             } 
         }
-
-        GridPane hai = new GridPane();
-        hai.setHgap(10);
-        hai.setVgap(10);
-        hai.setPadding(new Insets(20, 20, 20, 20));
-        for(int i = 0; i < bt.length; i++){
+        paneDispHai.setHgap(10);
+        paneDispHai.setVgap(10);
+        paneDispHai.setPadding(new Insets(20, 20, 20, 20));
+        for(int i = 0; i < btnHai.length; i++){
             if(i == 3){
                 for(int j = 0; j < 7; j++){
-                    hai.add(bt[i][j],j,i);
+                    paneDispHai.add(btnHai[i][j],j,i);
                 }
             } else{
                 for(int j = 0; j < 9; j++){
-                    hai.add(bt[i][j],j,i);
+                    paneDispHai.add(btnHai[i][j],j,i);
                 }
             }
         }
-        
-        //オプションボタンを作成・テキストをセット(右側)
-        for(int i = 0; i < bt2.length; i++){
-            bt2[i] = new Button(hand.getOption(i));
-        }
 
-        VBox option = new VBox(10d);
-        option.setPadding(new Insets(20, 20, 20, 20));
-        for (int i = 0; i<bt2.length; i++) {
-            option.getChildren().addAll(bt2[i]);
-        }
-
-        //決定・戻るボタンの作成(下側)
-        for(int i = 0; i < bt3.length; i++){
-            bt3[i] = new Button(hand.enterOrReturn[i]);
-        }
-        //bt3[0].setOnAction(new PushReturn());
-        //bt3[1].setOnAction(new push_enter());
-
-        HBox enter_retrun = new HBox(30d);
-        enter_retrun.setPadding(new Insets(20, 20, 20, 20));
-        for (int i = 0; i<bt3.length; i++) {
-            enter_retrun.getChildren().addAll(bt3[i]);
-        }
-
-        //メンツの表示(左) 
+        //mentsに配置(左)
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 3; j++){     
-                String a = hand.getMen(i,j);
-                mentlabel[i][j] = new Label(a);
-                mentlabel[i][j].setPrefWidth(20);
+                String tmpMents = hand.getMents(i,j);
+                lblMents[i][j] = new Label(tmpMents);
+                lblMents[i][j].setPrefWidth(20);
             }
         }
-
-        GridPane mentGp = new GridPane();
-        mentGp.setHgap(10);
-        mentGp.setVgap(10);
-        mentGp.setPadding(new Insets(20, 20, 20, 20));
+        paneDispMents.setHgap(10);
+        paneDispMents.setVgap(10);
+        paneDispMents.setPadding(new Insets(20, 20, 20, 20));
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 3; j++){
-                mentGp.add(mentlabel[i][j],j,i);
+                paneDispMents.add(lblMents[i][j],j,i);
             }
         }
 
-        //上に表示するラベル
-        uplabel.setText("選択してください");
-        FlowPane attent = new FlowPane(uplabel);
-        attent.setPadding(new Insets(20, 20, 20, 20));
+        //pontiiに配置(右)
+        for(int i = 0; i < btnPonTii.length; i++){
+            btnPonTii[i] = new Button(hand.PONTII[i]);
+        }
+        paneDistPonTii.setPadding(new Insets(20, 20, 20, 20));
+        for (int i = 0; i< btnPonTii.length; i++) {
+            paneDistPonTii.getChildren().addAll(btnPonTii[i]);
+        }
 
-        //rootPaneの作成
-        //BorderPane root = new BorderPane();
-        root.setCenter(hai);
-        root.setRight(option);
-        root.setBottom(enter_retrun);
-        root.setLeft(mentGp);
-        root.setTop(attent);
-        hai.setAlignment(Pos.CENTER);
-        option.setAlignment(Pos.CENTER_RIGHT);
-        enter_retrun.setAlignment(Pos.BOTTOM_CENTER);
-        mentGp.setAlignment(Pos.CENTER_LEFT);
-        attent.setAlignment(Pos.CENTER);
+        //enterreturnに入り(した)
+        for(int i = 0; i < btnReturnEnter.length; i++){
+            btnReturnEnter[i] = new Button(hand.RETURNENTER[i]);
+        }
+        btnReturnEnter[0].setOnAction(new PushBtnReturn());
+        btnReturnEnter[1].setOnAction(new PushBtnEnter());
+        paneDispReturnEnter.setPadding(new Insets(20, 20, 20, 20));
+        for (int i = 0; i<btnReturnEnter.length; i++) {
+            paneDispReturnEnter.getChildren().addAll(btnReturnEnter[i]);
+        }
 
-        stage.setScene(new Scene(root));
+        //(上)
+        lblInstructionToUser.setText("選択してください");
+        paneInstructionToUser.getChildren().add(lblInstructionToUser);
+        paneInstructionToUser.setPadding(new Insets(20, 20, 20, 20));
 
-        //決定ボタン後のpane
-        
+        //rootpaneに配置
+        paneDispHai.setAlignment(Pos.CENTER);
+        paneDispMents.setAlignment(Pos.CENTER_LEFT);
+        paneDistPonTii.setAlignment(Pos.CENTER_RIGHT);
+        paneDispReturnEnter.setAlignment(Pos.BOTTOM_CENTER);
+        paneInstructionToUser.setAlignment(Pos.CENTER);
+        paneRoot.setCenter(paneDispHai);
+        paneRoot.setLeft(paneDispMents);
+        paneRoot.setRight(paneDistPonTii);
+        paneRoot.setBottom(paneDispReturnEnter);
+        paneRoot.setTop(paneInstructionToUser);
 
+        //stageの設定
+        stage.setScene(new Scene(paneRoot));
         stage.setTitle("符計算");
+        stage.setWidth(800);
+        stage.setHeight(400);
         stage.show();
-
     }
 
-    //牌が押された時の処理    
-    class push_hai implements EventHandler<ActionEvent>{
+    class PushBtnHai implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent e){
             Button b = (Button)e.getSource();
@@ -159,22 +156,104 @@ public class ReMajanMini extends Application{
             int x = Integer.parseInt(Stid[0]);
             int y = Integer.parseInt(Stid[1]);
 
-            
-
+            if(check.canAddMents(hand.getMentsArgs()) == true && check.isHaiCounter4(x, y)){
+                String[] mentsIJ = hand.serchLastAddMents("?AtFirst").split(",",0);
+                int mentsI = Integer.parseInt(mentsIJ[0]);
+                int mentsJ = Integer.parseInt(mentsIJ[1]);
+                hand.setMents(hand.serchLastAddMents("?AtFirst"), x, y);
+                lblMents[mentsI][mentsJ].setText(hand.HAI[x][y]);
+                check.setHaiCounter(x, y);
+                lblInstructionToUser.setText("選択してください");
+            } else {
+                if(!(lblInstructionToUser.equals("追加できません"))){
+                    lblInstructionToUser.setText("追加できません");
+                }
+            }
+        }
     }
 
-    //戻るボタンのイベント
-    class PushReturn implements EventHandler<ActionEvent>{
-        @Override
-
-    }
-
-    class PushEnter implements EventHandler<ActionEvent>{
+    class PushBtnReturn implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent e){
+            if(check.canRemoveMents(hand.getMentsArgs()) == true ){
+                String[] mentsIJ = hand.serchLastAddMents("lstAddMents").split(",",0);
+                int mentsI = Integer.parseInt(mentsIJ[0]);
+                int mentsJ = Integer.parseInt(mentsIJ[1]);
+                String s = hand.getMentsToIndex(hand.getMents(mentsI,mentsJ));
+                String[] index = s.split(",",0);
+                check.removeHiCounter(Integer.parseInt(index[0]),Integer.parseInt(index[1]));
+                hand.removeMen(hand.serchLastAddMents("lstAddMents"));
+                lblMents[mentsI][mentsJ].setText("?");
+                lblInstructionToUser.setText("選択してください");
+            } else {
+                lblInstructionToUser.setText("削除できません");
+            }
+        }
+    }
+
+    class PushBtnEnter implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent e){
+            if(check.isFullMents(hand.getMentsArgs()) == false){
+                lblInstructionToUser.setText("手牌を全て入力して下さい");
+            } else {
+                paneSelectAgari.getItems().addAll("ロン","ツモ");
+                paneSelectAgari.setPrefWidth(160);
+                paneSelectAgari.setOnAction(new SelectComb());
+                paneSelectMati.getItems().addAll("辺張・嵌張・単騎","それ以外");
+                paneSelectMati.setPrefWidth(160);
+                paneSelectMati.setOnAction(new SelectComb());
+                paneSelectYakuhai.getItems().addAll("自風","他風");
+                paneSelectYakuhai.setPrefWidth(160);
+                paneSelectYakuhai.setOnAction(new SelectComb());
+                paneMatiBox.setAlignment(Pos.CENTER_RIGHT);
+                paneAgariBox.setAlignment(Pos.CENTER_RIGHT);
+                paneYakuhaiBox.setAlignment(Pos.CENTER_RIGHT);
+                paneAfterEnter.setAlignment(Pos.CENTER);
+
+                btnAfterEnter = new Button("計算に進む");
+                paneAfterEnter.setPadding(new Insets(20, 20, 20, 20));
+                paneAfterEnter.getChildren().add(btnAfterEnter);
+
+                GridPane paneAfterGrid = new GridPane();
+                lblAgari.setText("上がり");
+                lblMati.setText("待ち");
+                lblYakuhai.setText("役牌");
+                paneAfterGrid.setHgap(50);
+                paneAfterGrid.setVgap(50);
+                paneAfterGrid.setPadding(new Insets(20, 20, 20, 20));
+                paneAfterGrid.add(lblAgari,0,0);
+                paneAfterGrid.add(paneSelectAgari,1,0);
+                paneAfterGrid.add(lblMati,0,1);
+                paneAfterGrid.add(paneSelectMati,1,1);
+                paneAfterGrid.add(lblYakuhai,0,2);
+                paneAfterGrid.add(paneSelectYakuhai,1,2);
+
+                paneRoot.setCenter(paneAfterGrid);
+                paneRoot.setRight(paneAfterRightVbox);
+                paneRoot.setBottom(paneAfterEnter);
+                
+            }
+        }
+    }
+
+    class SelectComb implements EventHandler<ActionEvent>{
+        public void handle(ActionEvent e){
+
+            ComboBox tmp = (ComboBox) e.getSource();
+            if(tmp == paneSelectAgari){
+                agariStr = tmp.getValue().toString();
+            } else if(tmp == paneSelectMati){
+                matiStr = tmp.getValue().toString();
+            } else {
+                yakuhaiStr = tmp.getValue().toString();
+            }
+
+            if(agariStr != null && matiStr != null && yakuhaiStr != null){
+                lblInstructionToUser.setText("入力完了");
+                
+            } 
 
         }
     }
-    
 }
-
